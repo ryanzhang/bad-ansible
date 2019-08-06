@@ -67,16 +67,17 @@
       name: tomcat
       enabled: yes
 
+  - name: Copy the tomcat-jui 
+    file: 
+      src: /usr/share/tomcat/lib/extras/tomcat-juli.jar
+      dest: /usr/share/tomcat/bin/tomcat-juli.jar
+    state: link
+    
   - name: create ansible tomcat directory
     file:
       path: /usr/share/tomcat/webapps/ROOT
       state: directory
 
-  - name: copy static index.html to tomcat webapps/ansible/index.html
-    template:
-      src: index.html.j2
-      dest: /usr/share/tomcat/webapps/ROOT/index.html
-      mode: 0644
 
   - name: start tomcat
     service:
@@ -89,10 +90,10 @@
   become: true
 
   tasks:
-  - name: copy static index.html to tomcat webapps/ansible/index.html
+  - name: copy static index.html to tomcat webapps/ROOT/index.html
     template:
       src: index.html.app1
-      dest: /usr/share/tomcat/webapps/ansible/index.html
+      dest: /usr/share/tomcat/webapps/ROOT/index.html
 
 - name: index.html on app 1
   hosts: app2
@@ -100,10 +101,10 @@
   become: true
 
   tasks:
-  - name: copy static index.html to tomcat webapps/ansible/index.html
+  - name: copy static index.html to tomcat webapps/ROOT/index.html
     template:
       src: index.html.app2
-      dest: /usr/share/tomcat/webapps/ansible/index.html
+      dest: /usr/share/tomcat/webapps/ROOT/index.html
 
 - name: deploy postgres
   hosts: apps
